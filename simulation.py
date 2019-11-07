@@ -2,7 +2,7 @@
 
 from population import Population
 from individual import Individual
-from random import random
+from random import random, randint, shuffle
 
 class Simulation:
     
@@ -14,15 +14,18 @@ class Simulation:
         self.delta = delta
         self.mutation_probability = mutation_probability
 
+
     def run_simulation(self):
         self.population.genesis()
         generation = 1
         self.population.eval_population()
         while not self.has_converged():
             selection = self.selection_tournament()
+            # selection = self.selection_roulette()
             children = self.crossing(selection)
             self.mutation(children)
             self.replace_population(children)
+            # self.replace_population_tournament(children)
             self.population.eval_population()
             global_fitness = self.population.get_global_fitness(normalized=True)
             self.global_fitness_records.append(global_fitness)
@@ -60,11 +63,26 @@ class Simulation:
         new_population[limit_new_population:] = self.population.individuals[need:2 * need]
 
         self.population.individuals = new_population
+
+
+    def replace_population_tournament(self, children):
         
+        new_population = []
+        candidates = self.population.individuals + children
+        shuffle(candidates)
+
+        for i in range(len(candidates) - 1):
+            new_population.append(Individual.oppose(
+                candidates[i],
+                candidates[i + 1]
+            ))
+            i += 1
+
+        self.population.individuals = new_population
 
 
     def selection_tournament(self):
-        """ Réalise l'opération de séléction """
+        """ Réalise l'opération de séléction par tournois """
 
         selection = []
         for _ in range(2):
@@ -79,6 +97,26 @@ class Simulation:
 
         return selection
 
+
+    def selection_roulette(self):
+        """ Réalise l'opération de séléction par roulette """
+
+        selection = []
+        sum_fit = 0
+        
+        for individu in self.population.individuals:
+            sum_fit += individu.get_fitness()
+
+        while len(selection) < self.population_size:
+            draw = randint(0, sum_fit)
+            cursor = self.population.individuals[0].get_fitness()
+            i = 0
+            while cursor <= draw:
+                i += 1
+                cursor += self.population.individuals[i].get_fitness()
+            selection.append(self.population.individuals[i])
+
+        return selection
 
     
     def crossing(self, selection):
