@@ -19,7 +19,7 @@ class Simulation:
         generation = 1
         self.population.eval_population()
         while not self.has_converged():
-            selection = self.selection()
+            selection = self.selection_tournament()
             children = self.crossing(selection)
             self.mutation(children)
             self.replace_population(children)
@@ -63,7 +63,7 @@ class Simulation:
         
 
 
-    def selection(self):
+    def selection_tournament(self):
         """ Réalise l'opération de séléction """
 
         selection = []
@@ -89,7 +89,7 @@ class Simulation:
             children.extend(Individual.reproduce(
                 selection[i],
                 selection[i + 1],
-                break_point_count = 2
+                break_point_count = 3
             ))
 
             i += 1
