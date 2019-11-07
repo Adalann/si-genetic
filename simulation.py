@@ -3,6 +3,7 @@
 from population import Population
 from individual import Individual
 from random import random, randint, shuffle
+from time import time
 
 class Simulation:
     
@@ -16,20 +17,22 @@ class Simulation:
 
 
     def run_simulation(self):
+        genesis_time = time()
         self.population.genesis()
         generation = 1
         self.population.eval_population()
         while not self.has_converged():
-            selection = self.selection_tournament()
-            # selection = self.selection_roulette()
+            # selection = self.selection_tournament()
+            selection = self.selection_roulette()
             children = self.crossing(selection)
             self.mutation(children)
-            self.replace_population(children)
-            # self.replace_population_tournament(children)
+            # self.replace_population(children)
+            self.replace_population_tournament(children)
             self.population.eval_population()
             global_fitness = self.population.get_global_fitness(normalized=True)
             self.global_fitness_records.append(global_fitness)
-            print("Gen {}, global fitness : {}".format(generation, global_fitness))
+            gene_time = time()
+            print("Gen {}, global fitness : {}, time : {}".format(generation, global_fitness, gene_time - genesis_time))
             generation += 1
 
 
