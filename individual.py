@@ -58,7 +58,7 @@ class Individual:
 
 
     @staticmethod
-    def reproduce(parent_A, parent_B, break_point_count = 1):
+    def reproduce(parent_A, parent_B, cross_point_count = 1):
         """ Réalise la reproduction entre deux parents """
 
         child_A = Individual(Individual.SIZE)
@@ -68,7 +68,7 @@ class Individual:
         temporary_B = parent_B
 
         break_points = []
-        while len(break_points) < break_point_count:
+        while len(break_points) < cross_point_count:
             new_break_point = randint(0, Individual.SIZE - 2)
             if new_break_point not in break_points:
                 break_points.append(new_break_point)

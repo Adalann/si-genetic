@@ -130,7 +130,7 @@ class Simulation:
             children.extend(Individual.reproduce(
                 selection[i],
                 selection[i + 1],
-                break_point_count = 3
+                cross_point_count = 3
             ))
 
             i += 1
