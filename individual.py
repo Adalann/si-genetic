@@ -2,6 +2,7 @@
 
 from random import randint
 
+
 class Individual:
     """ Représente les individus """
 
@@ -67,15 +68,15 @@ class Individual:
         temporary_A = parent_A
         temporary_B = parent_B
 
-        break_points = []
-        while len(break_points) < cross_point_count:
+        cross_points = []
+        while len(cross_points) < cross_point_count:
             new_break_point = randint(0, Individual.SIZE - 2)
-            if new_break_point not in break_points:
-                break_points.append(new_break_point)
-        break_points.sort()
+            if new_break_point not in cross_points:
+                cross_points.append(new_break_point)
+        cross_points.sort()
 
         for i in range(Individual.SIZE):
-            if i in break_points:
+            if i in cross_points:
                 temporary_A, temporary_B = temporary_B, temporary_A
             child_A.genes[i] = temporary_A.genes[i]
             child_B.genes[i] = temporary_B.genes[i]
@@ -94,4 +95,3 @@ class Individual:
         
     def __str__(self):
         return "Individual [fitscore = {}, genes = {}]".format(self.fit_score, self.genes)
-

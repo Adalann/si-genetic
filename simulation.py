@@ -1,23 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from population import Population
+import datetime
+from random import randint, random, shuffle
+
 from individual import Individual
-from random import random, randint, shuffle
-from time import time
+from population import Population
+
 
 class Simulation:
     
-    def __init__(self, population_size, individual_size, delta = 0.01, mutation_probability = 0.5):
+    def __init__(self, population_size, individual_size, cross_point_count, delta, mutation_probability = 0.1):
         self.population_size = population_size
         self.population = Population(population_size, individual_size)
         self.global_fitness_records = []
         self.convergence_value = 0
+        self.cross_point_count = cross_point_count
         self.delta = delta
         self.mutation_probability = mutation_probability
 
 
     def run_simulation(self):
-        genesis_time = time()
+        """ Algorithme génétique """
+
+        genesis_time = datetime.datetime.now()
         self.population.genesis()
         generation = 1
         self.population.eval_population()
@@ -31,8 +36,8 @@ class Simulation:
             self.population.eval_population()
             global_fitness = self.population.get_global_fitness(normalized=True)
             self.global_fitness_records.append(global_fitness)
-            gene_time = time()
-            print("Gen {}, global fitness : {}, time : {}".format(generation, global_fitness, gene_time - genesis_time))
+            gene_time = datetime.datetime.now()
+            print("Gen {}, global fitness : {}, time : {}".format(generation, global_fitness, str(gene_time - genesis_time)))
             generation += 1
 
 
@@ -124,13 +129,13 @@ class Simulation:
     
     def crossing(self, selection):
         """ Réalise l'opération de croisement """
-
+ 
         children = []
         for i in range(len(selection) - 1):
             children.extend(Individual.reproduce(
                 selection[i],
                 selection[i + 1],
-                cross_point_count = 3
+                cross_point_count = self.cross_point_count
             ))
 
             i += 1
@@ -142,7 +147,5 @@ class Simulation:
         """ Réalise les mutations """
 
         for individual in individuals:
-            if individual.get_fitness(normalized = True) < 0.5 and random() < self.mutation_probability:
+            if random() < self.mutation_probability:
                 individual.mutate()
-                
-

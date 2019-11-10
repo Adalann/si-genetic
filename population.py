@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from individual import Individual
 from random import shuffle
+
+from individual import Individual
+
 
 class Population:
     """ Représente une multitute d'individu """

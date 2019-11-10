@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
 
-from simulation import Simulation
+import getopt
+import sys
+
 import matplotlib.pyplot as plt
-import sys, getopt
+
+from simulation import Simulation
+
 
 def main(argv):
     population_size = 20
     individual_size = 8
     delta = 0.005
+    cross_point_count = 1
+    verbose = False
 
     try:
-        opts, args = getopt.getopt(argv, 'hp:i:d:', ['help', 'population-size=', 'individual-size=', 'delta='])
+        opts, args = getopt.getopt(argv, 'hvp:i:c:d:', ['help', 'verbose', 'population-size=', 'individual-size=', 'cross-points=', 'delta='])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -19,17 +25,23 @@ def main(argv):
         if opt in ('-h', '--help'):
             usage()
             sys.exit()
+        if opt in ('-v', '--verbose'):
+            verbose = True
         if opt in ('-p', '--population-size'):
             population_size = int(arg)
         if opt in ('-i', '--individual-size'):
             individual_size = int(arg)
+        if opt in ('-c', '--cross-points'):
+            cross_point_count = int(arg)
         if opt in ('-d', '--delta'):
             delta = float(arg)
+
     
-    print("pop size = {}, ind size = {}, delta = {}".format(population_size, individual_size, delta))
-    simulation = Simulation(population_size, individual_size, delta)
+    print("pop size = {}, ind size = {}, cross points = {}, delta = {}".format(population_size, individual_size, cross_point_count, delta))
+    simulation = Simulation(population_size, individual_size, cross_point_count, delta)
     simulation.run_simulation()
-    print(simulation.population)
+    if verbose:
+        print(simulation.population)
     plt.plot(simulation.global_fitness_records)
     plt.show()
 
