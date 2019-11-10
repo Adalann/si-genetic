@@ -15,7 +15,7 @@ python -m pip install matplotlib
 python genetic.py [options]
 ```
 
-You can specify the folloing options : 
+You can specify the following options : 
 
     -p, --population-size [integer]:
         The size of the population that will be use in the genetic algorithm.
