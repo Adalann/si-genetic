@@ -1,9 +1,9 @@
 # genetic
-Learning genetic algorithm
+Basic genetic algorithm
 
 # Dependencies
 
-Be sure to have matplotlib installed. If you don't, install the lib :
+Be sure to have matplotlib installed. If you don't, you can install it like that :
 
 ```shell
 python -m pip install matplotlib
@@ -16,6 +16,7 @@ python genetic.py [options]
 ```
 
 You can specify the folloing options : 
+
     -p, --population-size [integer]:
         The size of the population that will be use in the genetic algorithm.
     -u, --individual-size [integer]
