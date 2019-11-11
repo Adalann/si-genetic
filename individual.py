@@ -24,7 +24,7 @@ class Individual:
 
         self.fit_score = 0
         for i in range(0, self.size):
-            self.fit_score += (2 ** (Individual.SIZE - 1 - i)) * self.genes[i]
+            self.fit_score += (2 ** (self.size - 1 - i)) * self.genes[i]
 
 
     def mutate(self):
