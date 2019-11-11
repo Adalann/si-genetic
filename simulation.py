@@ -8,6 +8,7 @@ from population import Population
 
 
 class Simulation:
+    """ Gère l'algorithme genetique """
 
     SELECTION_ROULETTE = 0
     SELECTION_TOURNAMENT = 1

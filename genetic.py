@@ -52,7 +52,9 @@ def usage():
     print("""
     Usage : python genetic.py [OPTIONS]
 
-    You can specify the folloing options : 
+    You can specify the folloing options :
+        -v, --verbose:
+            If specified the last population will be printed out in the terminal.
         -p, --population-size [integer]:
             The size of the population that will be use in the genetic algorithm.
         -u, --individual-size [integer]
