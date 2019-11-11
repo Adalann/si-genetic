@@ -15,9 +15,8 @@ class Individual:
         self.fit_score = 0
         for _ in range(0, size):
             self.genes.append(randint(0, 1))
-        
-        self.evaluate()
 
+        self.evaluate()
 
     def evaluate(self):
         """ Calcule la valeur de Fitness """
@@ -26,15 +25,13 @@ class Individual:
         for i in range(0, self.size):
             self.fit_score += (2 ** (self.size - 1 - i)) * self.genes[i]
 
-
     def mutate(self):
         """ Réalise la mutation """
 
         pos = randint(0, self.size - 1)
         self.genes[pos] = 0 if self.genes[pos] == 1 else 1
 
-
-    def get_fitness(self, normalized = False):
+    def get_fitness(self, normalized=False):
         """
         Retoune le score de fitness de l'individu.
         Si normalized est à True, ce résultat est comprit en 0 et 1
@@ -44,7 +41,6 @@ class Individual:
             return self.fit_score / Individual.get_maximal_fit_score()
         else:
             return self.fit_score
-
 
     @staticmethod
     def oppose(individual_A, individual_B):
@@ -57,9 +53,8 @@ class Individual:
         else:
             return individual_B
 
-
     @staticmethod
-    def reproduce(parent_A, parent_B, cross_point_count = 1):
+    def reproduce(parent_A, parent_B, cross_point_count=1):
         """ Réalise la reproduction entre deux parents """
 
         child_A = Individual(Individual.SIZE)
@@ -83,7 +78,6 @@ class Individual:
 
         return (child_A, child_B)
 
-
     @staticmethod
     def get_maximal_fit_score():
         maximal_fit_score = 0
@@ -92,6 +86,5 @@ class Individual:
 
         return maximal_fit_score
 
-        
     def __str__(self):
         return "Individual [fitscore = {}, genes = {}]".format(self.fit_score, self.genes)

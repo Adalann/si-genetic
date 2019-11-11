@@ -16,7 +16,8 @@ def main(argv):
     verbose = False
 
     try:
-        opts, args = getopt.getopt(argv, 'hvp:i:c:d:', ['help', 'verbose', 'population-size=', 'individual-size=', 'cross-points=', 'delta='])
+        opts, args = getopt.getopt(argv, 'hvp:i:c:d:', [
+                                   'help', 'verbose', 'population-size=', 'individual-size=', 'cross-points=', 'delta='])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -36,14 +37,16 @@ def main(argv):
         if opt in ('-d', '--delta'):
             delta = float(arg)
 
-    
-    print("pop size = {}, ind size = {}, cross points = {}, delta = {}".format(population_size, individual_size, cross_point_count, delta))
-    simulation = Simulation(population_size, individual_size, cross_point_count, delta)
+    print("pop size = {}, ind size = {}, cross points = {}, delta = {}".format(
+        population_size, individual_size, cross_point_count, delta))
+    simulation = Simulation(
+        population_size, individual_size, cross_point_count, delta)
     simulation.run_simulation()
     if verbose:
         print(simulation.population)
     plt.plot(simulation.global_fitness_records)
     plt.show()
+
 
 def usage():
     print("""
@@ -58,6 +61,7 @@ def usage():
             A value for the convergence detection. The less this value will be, the longer the algorithm will take to stop but the greater the average fitness value will be.
             This value must be less than 1.
     """)
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
