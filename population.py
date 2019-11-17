@@ -49,7 +49,7 @@ class Population:
         shuffle(self.individuals)
 
     def selection_roulette(self):
-        """ Réalise l'opération de séléction par roulette """
+        """ Réalise l'opération de sélection par roulette """
 
         selection = []
         sum_fit = 0
@@ -69,12 +69,14 @@ class Population:
         return selection
 
     def selection_tournament(self):
-        """ Réalise l'opération de séléction par tournois """
+        """ Réalise l'opération de sélection par tournoi """
 
         selection = []
         for _ in range(2):
             self.shuffle()
             for i in range(self.size - 1):
+                # La méthode Individual.oppose retourne l'individu 
+                # ayant la plus grande valeur de fitness
                 selection.append(Individual.oppose(
                     self.individuals[i],
                     self.individuals[i + 1]
@@ -103,20 +105,24 @@ class Population:
         return new_population
 
     def generate_population_tournament(self, children):
-        """ Réalise l'opération de remplacement - Tournois """
+        """ Réalise l'opération de remplacement - Tournoi """
 
         new_population = Population(self.size, self.size_individuals)
         candidates = self.individuals + children
         shuffle(candidates)
 
-        for i in range(len(candidates) - 1):
+        i = 0
+        while i < len(candidates) - 1 and len(new_population.individuals) < self.size:
             new_population.individuals.append(Individual.oppose(
                 candidates[i],
                 candidates[i + 1]
             ))
-            i += 1
+            i += 2
 
         return new_population
+
+    def get_size(self):
+        return len(self.individuals)
 
     def __str__(self):
         res = "Population [global_fit_score = {}, individuals = [".format(

@@ -44,7 +44,20 @@ def main(argv):
     simulation.run_simulation()
     if verbose:
         print(simulation.population)
-    plt.plot(simulation.global_fitness_records)
+
+
+    # Ploting
+    x_values = range(0, len(simulation.global_fitness_records))
+    y_values = [
+        simulation.global_fitness_records,
+        simulation.convergence_values
+    ]
+    labels = ["Average fitness score", "Convergence values"]
+
+    for y_array, label in zip(y_values, labels):
+        plt.plot(x_values, y_array, label=label)
+
+    plt.legend()
     plt.show()
 
 
