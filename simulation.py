@@ -13,18 +13,18 @@ class Simulation:
     SELECTION_ROULETTE = 0
     SELECTION_TOURNAMENT = 1
 
-    REPLACEMENT_ELITISM = 0
-    REPLACEMENT_TOURNAMENT = 1
-
-    def __init__(self, population_size, individual_size, cross_point_count, delta, mutation_probability=0.1):
+    def __init__(self, population_size, individual_size, cross_point_count, delta, mutation_probability=0.1, selection_mode=SELECTION_ROULETTE):
         self.population_size = population_size
         self.population = Population(population_size, individual_size)
+        self.cross_point_count = cross_point_count
+        self.delta = delta
+        self.selection_mode = selection_mode
+
+        self.generation = 0
         self.population_historic = []
         self.global_fitness_records = []
         self.convergence_value = 0
         self.convergence_values = []
-        self.cross_point_count = cross_point_count
-        self.delta = delta
         self.mutation_probability = mutation_probability
 
     def run_simulation(self):
@@ -36,11 +36,11 @@ class Simulation:
         global_fitness = self.population.get_global_fitness(
                 normalized=True)
         self.global_fitness_records.append(global_fitness)
-        print("Genesis, global fitness : {}".format(global_fitness))
-        generation = 2
+        #print("Genesis, global fitness : {}".format(global_fitness))
+        self.generation += 1
 
         while not self.has_converged():
-            selection = self.selection()
+            selection = self.selection(self.selection_mode)
             children = self.crossing(selection)
             self.mutation(children)
             self.replace_population(children)
@@ -49,9 +49,9 @@ class Simulation:
                 normalized=True)
             self.global_fitness_records.append(global_fitness)
             gene_time = datetime.datetime.now()
-            print("Gen {}, global fitness : {}, time : {}".format(
-                generation, global_fitness, str(gene_time - genesis_time)))
-            generation += 1
+            #print("Gen {}, global fitness : {}, time : {}".format(
+                #self.generation, global_fitness, str(gene_time - genesis_time)))
+            self.generation += 1
 
     def has_converged(self):
         """ Calcul la convergence de l'algorithme """
@@ -64,7 +64,8 @@ class Simulation:
             if abs(new_convergence_value - self.convergence_value) < self.delta:
                 has_converged = True
             self.convergence_value = new_convergence_value
-            self.convergence_values.append(self.convergence_value)
+        
+        self.convergence_values.append(self.convergence_value)
 
         return has_converged
 
@@ -104,19 +105,13 @@ class Simulation:
             if random() < self.mutation_probability:
                 individual.mutate()
 
-    def replace_population(self, children, replacement_mode=1, store=False):
+    def replace_population(self, children, store=False):
         """
             Réalise l'opération de remplacement
-            Si replacement_mode = 0 alors le mode de remplacement sera l'élitisme, sinon un tournois sera utilisé
             Si store = True, la population précédente sera sauvegardé dans la liste population_historic
         """
 
         if store:
             self.population_historic.append(self.population)
 
-        if replacement_mode == Simulation.REPLACEMENT_ELITISM:
-            self.population = self.population.generate_population_elitism(
-                children)
-        elif replacement_mode == Simulation.REPLACEMENT_TOURNAMENT:
-            self.population = self.population.generate_population_tournament(
-                children)
+        self.population = self.population.generate_population_tournament(children)

@@ -53,6 +53,7 @@ class Population:
 
         selection = []
         sum_fit = 0
+        self.shuffle()
 
         for individu in self.individuals:
             sum_fit += individu.get_fitness()
@@ -85,24 +86,6 @@ class Population:
                 i += 1
 
         return selection
-
-    def generate_population_elitism(self, children):
-        """ Réalise l'opération de remplacement - Elitisme """
-
-        new_population = Population(self.size, self.size_individuals)
-        new_population.individuals = [None] * self.size
-
-        self.individuals.sort(key=lambda i: i.fit_score)
-        children.sort(key=lambda i: i.fit_score, reverse=True)
-
-        limit_new_population = (int)(self.size * 0.8)
-        new_population.individuals[:limit_new_population] = children[:limit_new_population]
-
-        need = self.size - limit_new_population
-        new_population.individuals[limit_new_population:
-                                   ] = self.individuals[need:2 * need]
-
-        return new_population
 
     def generate_population_tournament(self, children):
         """ Réalise l'opération de remplacement - Tournoi """

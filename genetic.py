@@ -17,7 +17,13 @@ def main(argv):
 
     try:
         opts, args = getopt.getopt(argv, 'hvp:i:c:d:', [
-                                   'help', 'verbose', 'population-size=', 'individual-size=', 'cross-points=', 'delta='])
+            'help',
+            'verbose',
+            'population-size=', 
+            'individual-size=', 
+            'cross-points=', 
+            'delta='
+        ])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
