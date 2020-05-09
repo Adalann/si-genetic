@@ -6,13 +6,13 @@ Basic genetic algorithm
 Be sure to have matplotlib installed. If you don't, you can install it like that :
 
 ```shell
-python -m pip install matplotlib
+python3 -m pip install matplotlib
 ```
 
 # Usage
 
 ```shell
-python genetic.py [options]
+python3 genetic.py [options]
 ```
 
 You can specify the following options : 
